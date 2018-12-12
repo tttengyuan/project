@@ -1,10 +1,162 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
+		<meta charset="utf-8" />
 		<title></title>
+		<style type="text/css">
+			.box{
+				line-height: 2;
+				width: 600px;
+				height: 400px;
+				border: 1px solid;
+				padding: 10px;
+				margin: 50px auto;
+			}
+			.wrap{
+				width: 550px;
+				height: 300px;
+				border: 1px solid;
+				background: #ccc;
+				margin: 10px auto;
+/*				opacity: 0.5;*/
+display: flex;
+justify-content: space-around;
+align-items: center;
+				
+				
+			}
+			.title{
+				width: 100px;
+				height: 120px;
+				margin: 10px;
+				border: 1px solid;
+			}
+			.title span{
+				cursor: pointer;
+				display: flex;
+				justify-content: center;
+			}
+			.title span:nth-child(1):hover{
+				color: red;
+			}
+			.title span:nth-child(odd){
+				background: yellow;
+			}
+			.title span:nth-child(2){
+				border-top: 1px solid;
+				background: white;
+				padding: 10px 0;
+				border-bottom: 1px solid;
+			}
+		</style>
 	</head>
 	<body>
-		<p>我是主页</p>
+		<div class="box">
+		<input type="text" placeholder="请输入您的心愿" /><br />
+		
+		<button>提交</button>
+		
+		<div class="wrap">
+			<!--<div class="title">
+				<span>删除</span>
+				<span>123</span>
+				<span>√</span>
+			</div>
+			<div class="title">
+				<span>删除</span>
+				<span>123</span>
+				<span>√</span>
+			</div>
+			<div class="title">
+				<span>删除</span>
+				<span>123</span>
+				<span>√</span>
+			</div>
+			<div class="title">
+				<span>删除</span>
+				<span>123</span>
+				<span>√</span>
+			</div>
+			<div class="title">
+				<span>删除</span>
+				<span>123</span>
+				<span>√</span>
+			</div>-->
+			
+		</div>
+			
+		</div>
+		
 	</body>
+	<script src="jquery-3.3.1.js" type="text/javascript" charset="utf-8"></script>
+	<!--<script src="ajax_v3.js" type="text/javascript" charset="utf-8"></script>-->
+	<script type="text/javascript">
+	   $("button").click(function () {
+	   	  $.ajax({
+	   	  	type:"get",
+	   	  	url:"http://localhost:8080/add",
+	   	  	data:{
+	   	  		content:$("input").eq(0).val()
+	   	  	},
+	   	  	async:true,
+	   	  	success(res){
+	   	  		console.log(res)
+	   	  		showPage()
+	   	  		$("input").eq(0).val()
+	   	  	}
+	   	  });
+	   })
+	   
+	   
+	   //渲染
+	   showPage();
+	   function showPage () {
+	   	$.ajax({
+	   		type:"get",
+	   		url:"http://localhost:8080/msg",
+	   		async:true,
+	   		success(res){
+	   			let str = "";
+	   			for (var i = 0; i < res.length; i++) {
+	   				str+=`
+	   				<div class='title'><span onclick=del('${res[i]._id}')>删除</span>
+	   				<span>${res[i].content}</span>
+	   				<span onclick=('$res{res[i]_id}')>√</span>
+	   				</div>`
+	   			}
+	   			$(".wrap").html(str)
+	   		}
+	   	});
+	 }
+	   //删除
+	  function del (id) {
+	  	$.ajax({
+	  		type:"get",
+	  		url:"http://localhost:8080/del",
+	  		async:true,
+	  		data:{
+	  			id:id
+	  		},
+	  		success(res){
+	  			console.log(res)
+	  			showPage()
+	  		}
+	  	});
+	}
+	  
+	  //变色
+	  function changeColor (id) {
+	  	$.ajax({
+	  		type:"get",
+	  		url:"http://localhost:8080/change",
+	  		async:true,
+	  		data:{
+	  			id:id
+	  		},
+	  		success(res){
+	  			showPage()
+	  		}
+	  	});
+	  }
+	</script>
 </html>
